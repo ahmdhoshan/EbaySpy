@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="EbaysiteModelStoreContainer" CdmEntityContainer="EbaysiteEntities">
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="EbaysiteModel.Users">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="WorkOnGetSeller" ColumnName="WorkOnGetSeller" />
+          <ScalarProperty Name="WorkOnGetSellers" ColumnName="WorkOnGetSellers" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="FirsName" ColumnName="FirsName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="EmailId" ColumnName="EmailId" />
+          <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Product">
+      <EntityTypeMapping TypeName="EbaysiteModel.Product">
+        <MappingFragment StoreEntitySet="Product">
+          <ScalarProperty Name="Last_30_Days_Sold" ColumnName="Last 30 Days Sold" />
+          <ScalarProperty Name="Last_7_Days_Sold" ColumnName="Last 7 Days Sold" />
+          <ScalarProperty Name="Last_Day_Sold_Number" ColumnName="Last Day Sold Number" />
+          <ScalarProperty Name="soldarray" ColumnName="soldarray" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="ProductURL" ColumnName="ProductURL" />
+          <ScalarProperty Name="SellerId" ColumnName="SellerId" />
+          <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Seller">
+      <EntityTypeMapping TypeName="EbaysiteModel.Seller">
+        <MappingFragment StoreEntitySet="Seller">
+          <ScalarProperty Name="TotalSoldsInLast1Days" ColumnName="TotalSoldsInLast1Days" />
+          <ScalarProperty Name="TotalSoldsInLast7Days" ColumnName="TotalSoldsInLast7Days" />
+          <ScalarProperty Name="TotalSoldsInLastMonth" ColumnName="TotalSoldsInLastMonth" />
+          <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />
+          <ScalarProperty Name="Spy" ColumnName="Spy" />
+          <ScalarProperty Name="Rating" ColumnName="Rating" />
+          <ScalarProperty Name="SellerId" ColumnName="SellerId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="UsersSeller" TypeName="EbaysiteModel.UsersSeller" StoreEntitySet="UsersSeller">
+      <EndProperty Name="Seller">
+        <ScalarProperty Name="SellerId" ColumnName="SellerId" />
+      </EndProperty>
+      <EndProperty Name="Users">
+        <ScalarProperty Name="UserId" ColumnName="UserId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <EntitySetMapping Name="WorkedUsers">
+      <EntityTypeMapping TypeName="EbaysiteModel.WorkedUsers">
+        <MappingFragment StoreEntitySet="WorkedUsers">
+          <ScalarProperty Name="Worked" ColumnName="Worked" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Roles">
+      <EntityTypeMapping TypeName="EbaysiteModel.Roles">
+        <MappingFragment StoreEntitySet="Roles">
+          <ScalarProperty Name="Role" ColumnName="Role" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Setting">
+      <EntityTypeMapping TypeName="EbaysiteModel.Setting">
+        <MappingFragment StoreEntitySet="Setting">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="IndexAd" ColumnName="IndexAd" />
+          <ScalarProperty Name="UserWaitedTime" ColumnName="UserWaitedTime" />
+          <ScalarProperty Name="SpeedUpServer" ColumnName="SpeedUpServer" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

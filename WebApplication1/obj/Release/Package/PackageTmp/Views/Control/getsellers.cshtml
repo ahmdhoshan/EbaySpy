@@ -1,0 +1,205 @@
+﻿
+
+
+@model WebApplication1.Models.Users
+
+
+
+@{
+    ViewBag.Title = "Getsellers";
+}
+
+
+@using (Html.BeginForm())
+{
+
+    <html>
+    <head>
+        <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.0.min.js"></script>
+        <link rel="stylesheet" href="~/Content/Site.css">
+
+    </head>
+
+    @if (!Request.IsAuthenticated) //if its not a member!
+    {
+        <br />
+        <div class="alert alert-danger">
+            <strong>What you trying to do ! you should be a member to see this page!</strong>
+        </div>
+    }
+    else if (Model.WorkedUsers.Worked == false || Model.WorkedUsers.Worked == null) //if its already member!
+    {
+        <body>
+
+            <table class="table">
+
+                <tr>
+                    <th>
+                        <p class="text-primary h2">Search By Keyword</p>
+                        <small class="">Note: after use this option you need to wait 5 minuts before use it again!</small>
+                        <br />
+                        <br />
+                        <br />
+                        <form>
+                            <div class="form-group">
+                                <label>Keyword</label>
+                                <input id="keyword" type="text" class="form-control" placeholder="Enter Keyword">
+                                <small class="form-text text-muted">Please choice keyword that have enough results</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Rating</label>
+                                <br />
+                                <small class="form-text text-muted">From</small>
+                                <input type="text" class="form-control" id="ratingfrom" width="8">
+                                <small class="form-text text-muted">To</small>
+                                <input type="text" class="form-control" id="ratingto" width="8">
+                            </div>
+
+
+                            <div class="form-group">
+                                <label>Number Of Sellers</label>
+                                <input type="text" class="form-control" id="numberofsellers" placeholder="Number Of Sellers">
+                            </div>
+
+
+
+
+
+                            <button id="gobtn" type="submit" class="btn btn-primary">Go</button>
+
+                            <div class="text-success" id="content"></div>
+                            <div class="text-danger" id="loadingdata">You Request Send</div>
+
+
+                        </form>
+
+
+
+
+                    </th>
+
+
+
+                    <th>
+                        <p class="text-primary h2">Search By Seller Name</p>
+
+
+                        <br />
+                        <form>
+                            <div class="form-group">
+                                <label>Seller UserName</label>
+                                <input id="sellername" type="text" class="form-control" placeholder="Enter Seller UserName">
+                                <small id="sml" class="form-text text-muted">Please make sure that the seller already exist</small>
+                                <div class="load-bar" id="lood" style="display: none;">
+                                    <div class="bar"></div>
+                                    <div class="bar"></div>
+                                    <div class="bar"></div>
+                                </div>
+                            </div>
+
+                            <button id="gobtnbyseller" class="btn btn-primary">Go</button>
+
+
+
+
+
+
+                        </form>
+
+
+                        <div class="text-success" id="content2"></div>
+                        <div class="text-danger" id="loadingdata2">You Request Send</div>
+
+                    </th>
+
+                </tr>
+
+
+            </table>
+
+
+
+
+            <script>
+
+                $('#loadingdata').hide();
+                $('#loadingdata2').hide();
+
+                $("#gobtn").click(function () {
+
+                    $('#loadingdata').show();
+
+                    console.log("/getsellersapi/" + $("#keyword").val() + "/" + $("#numberofsellers").val() + "/" + $("#ratingfrom").val() + "/" + $("#ratingto").val());
+
+                    $.ajax({
+                        url: "/getsellersapi/" + $("#keyword").val() + "/" + $("#numberofsellers").val() + "/" + $("#ratingfrom").val() + "/" + $("#ratingto").val(),
+                        type: "GET",
+                        cache: false,
+                        async: false,
+                        complete: function () {
+
+                        },
+                        success: function (data) {
+                            $("#content").html(data);
+
+                        }
+                    });
+
+
+                    return false;
+                });
+
+
+
+
+                $("#gobtnbyseller").click(function () {
+
+                    $('#loadingdata2').show();
+
+                    $.ajax({
+                        type: "GET",
+                        url: "/addonesellerapi/" + $("#sellername").val(),
+                        async: false,
+                        cache: false,
+                        complete: function () {
+
+                        },
+                        success: function (data) {
+                            $("#content2").html(data);
+                        },
+                        error: function (err) {
+                            $("#content2").html("Please Enter a Value!");
+                        }
+
+                    });
+
+
+                    return false;
+                })
+
+
+
+
+
+
+
+            </script>
+        </body>
+
+    }
+    else
+    {
+        <br />
+        <div class="alert alert-success">
+            <strong>We Are Working On Your Request, Please try again after few minuts</strong>
+        </div>
+    }
+
+</html>
+
+
+
+
+
+}

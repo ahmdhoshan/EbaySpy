@@ -1,0 +1,119 @@
+﻿
+
+@model WebApplication1.Models.Setting
+
+
+
+@{
+    ViewBag.Title = "AdminPanell";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+    <html>
+    <head>
+        <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.0.min.js"></script>
+        <link rel="stylesheet" href="~/Content/Site.css">
+
+    </head>
+
+    <body>
+
+        <h2>Admin Panel</h2>
+
+
+        <table class="table">
+
+            <tr>
+                <th>
+                    <p class="text-primary h2">Site Performance</p>
+
+                    <br />
+                    <form>
+                        <div class="form-group">
+                            <label>Waiter Time For Big Processes:</label>
+
+                            <input id="waitedtime" type="text" class="form-control" value="@Html.DisplayFor(model => model.UserWaitedTime)">
+                            <small class="form-text text-muted">The time that user should wait to do a next big processes (in ms)</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label>SpeedUp The Processes: <input type="checkbox" id="SpeedUpss" value="true" @(Model.SpeedUpServer ? "checked=\"checked\"" : "")"> </label><br />
+                            <small class="form-text text-muted">Run many threads for the processes (You Need Good Server For That!)</small>
+                        </div>
+
+
+                    </form>
+
+
+                    <p class="text-primary h2">Site Design</p>
+
+
+                    <br />
+                    <form>
+                        <div class="form-group">
+                            <label>Home Ad</label>
+                            <input id="homead" type="text" class="form-control" placeholder="Image URL">
+                            <small id="sml" class="form-text text-muted">enter an image for index ad</small>
+                            <div class="load-bar" id="lood" style="display: none;">
+                            </div>
+                        </div>
+                    </form>
+
+
+                    <button id="gobtn" type="submit" class="btn btn-primary">Go</button>
+
+                    <div class="text-success" id="content"></div>
+
+
+
+                </th>
+
+
+
+            </tr>
+
+
+        </table>
+
+
+        <script>
+
+
+            $("#gobtn").click(function () {
+
+
+                if ($("#SpeedUpss").is(":checked")) {
+                    var SpeedUpCheck = true;
+                } else { var SpeedUpCheck = false; }
+
+                $.ajax({
+                    url: "/GetSiteSetting/" + SpeedUpCheck + "/" + $("#waitedtime").val() + "/" + $("#homead").val(),
+                    type: "GET",
+                    cache: false,
+                    async: false,
+                    complete: function () {
+
+                    },
+                    success: function (data) {
+                        $("#content").html(data);
+                    },
+                    error: function (err) {
+                        $("#content").html("Please fill all boxes");
+                    }
+                });
+
+
+                return false;
+            });
+
+
+
+
+        </script>
+
+    </body>
+
+</html>
+

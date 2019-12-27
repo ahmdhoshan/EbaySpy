@@ -1,0 +1,54 @@
+﻿
+@model PagedList.IPagedList<WebApplication1.Models.Product>
+@using PagedList.Mvc;
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+
+@{
+    ViewBag.Title = "SellersList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Products List</h2>
+
+
+
+<table class="table">
+
+
+    <tr>
+        <th>Product Page</th>
+        <th>Seller Id</th>
+        <th>ٍMove</th>
+        <th>@Html.ActionLink("Added Date", "Products", new { sortOrder = ViewBag.SortParmDate }) </th>
+        <th>@Html.ActionLink("Last Day Sold Number", "Products", new { sortOrder = ViewBag.SortParm1 }) </th>
+        <th>@Html.ActionLink("Last 7 Days Sold Number", "Products", new { sortOrder = ViewBag.SortParm7 }) </th>
+        <th>@Html.ActionLink("Last 30 Days Sold Number", "Products", new { sortOrder = ViewBag.SortParm30 }) </th>
+        <th>Delete</th>
+    </tr>
+
+    @foreach (var prodct in Model)
+    {
+      string productid = prodct.ProductURL;
+    <tr>
+        <td><a target="_blank" href="http://www.ebay.com/itm/@productid">@Html.DisplayFor(modelItem => prodct.Title)</a></td>
+        <td><a target="_blank" href="http://www.ebay.com/usr/@prodct.SellerId">@Html.DisplayFor(modelItem => prodct.SellerId)</a></td>
+        <td>@Html.ActionLink("Move To My_Products", "MoveToMyProducts", new { id = prodct.ProductId })</td>
+        <td> @(prodct.AddedDate)</td>
+        <td> @(prodct.Last_Day_Sold_Number)</td>
+        <td>@prodct.Last_7_Days_Sold</td>
+        <td>@prodct.Last_30_Days_Sold</td>
+        <td>@Html.ActionLink("Delete", "DeleteProd", new { id = prodct.ProductId })</td>
+    </tr>
+
+    }
+
+</table>
+
+
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Products",
+    new { page, sortOrder = ViewBag.CurrentSort}))

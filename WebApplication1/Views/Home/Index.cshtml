@@ -1,0 +1,81 @@
+﻿
+
+@model WebApplication1.Models.Users
+
+
+
+
+@using (Html.BeginForm())
+{
+
+    <html>
+    <head>
+        <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.0.min.js"></script>
+        <link rel="stylesheet" href="~/Content/Site.css">
+
+    </head>
+
+    <body >
+
+        @if (Request.IsAuthenticated)
+    {
+        if (Model.UserId == 1)
+        {
+            <h2 >Hello Admin: <a href="/Home/AdminPanell"><font color="red">Go to Admin Panel</font></a></h2>
+            <br/>
+            <div>
+                <font color="red">
+                    <h3>Important Urls:</h3>
+                </font>
+                
+                    <h4><font color="#ffa500">
+    Run Every 24 Hours
+</font>
+                (Use Microsoft® <a href="http://azure.microsoft.co.il/" style="color:red">Azure</a> Service):</h4>
+
+                <input type="text" id="myInput" size="40" value="@ViewData["import1"]">
+                <button onclick="myFunction()">Copy text</button>
+            </div>
+            }
+            else
+            {
+
+        <img src="https://andrewminalto.com/wp-content/uploads/2015/02/spy-on-ebay.jpg">
+}
+
+}
+else
+{
+
+
+    <img src="https://andrewminalto.com/wp-content/uploads/2015/02/spy-on-ebay.jpg">
+
+
+
+}
+
+
+
+        <script>
+            function myFunction() {
+                var copyText = document.getElementById("myInput");
+                copyText.select();
+                document.execCommand("Copy");
+                alert("Copied the text: " + copyText.value);
+            }
+        </script>
+
+
+       
+    </body>
+
+</html>
+
+
+
+
+
+}
+
+
+

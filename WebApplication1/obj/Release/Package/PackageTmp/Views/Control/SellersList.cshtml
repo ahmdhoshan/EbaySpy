@@ -1,0 +1,53 @@
+﻿@model IEnumerable<WebApplication1.Models.Seller>
+
+
+@{
+    ViewBag.Title = "SellersList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Sellers List</h2>
+
+
+<table class="table">
+
+
+    <tr>
+        <th>Seller Page</th>
+        <th>@Html.ActionLink("Rating", "SellersList", new { sortOrder = ViewBag.SortParmRate }) </th>
+        <th>@Html.ActionLink("30 Day Sales", "SellersList", new { sortOrder = ViewBag.SortParm30 }) </th>
+        <th>@Html.ActionLink("7 Day Sales", "SellersList", new { sortOrder = ViewBag.SortParm7 }) </th>
+        <th>@Html.ActionLink("1 Day Sales", "SellersList", new { sortOrder = ViewBag.SortParm1 }) </th>
+        <th>@Html.ActionLink("Added Date", "SellersList", new { sortOrder = ViewBag.SortParmDate }) </th>
+        <th>Delete Seller</th>
+        <th>Spy</th>
+    </tr>
+
+    @foreach (var seler in Model)
+    {
+
+        <tr>
+
+            <td><a target="_blank" href="http://www.ebay.com/usr/@seler.SellerId">@Html.DisplayFor(modelItem => seler.SellerId)</a></td>
+            <td>@Html.DisplayFor(modelItem => seler.Rating)</td>
+            <td>@Html.DisplayFor(modelItem => seler.TotalSoldsInLastMonth)</td>
+            <td>@Html.DisplayFor(modelItem => seler.TotalSoldsInLast7Days)</td>
+            <td>@Html.DisplayFor(modelItem => seler.TotalSoldsInLast1Days)</td>
+            <td>@Html.DisplayFor(modelItem => seler.AddedDate)</td>
+            <td>@Html.ActionLink("Delete", "Delete", new { id = seler.SellerId })</td>
+
+            @if (seler.Spy == 0 || seler.Spy == 2)
+            {
+                <td>@Html.ActionLink("Spy", "SpyOneSeller_ViewFunc", new { id = seler.SellerId })</td>
+            }
+            else if (seler.Spy == 1)
+            {
+                <td>@Html.ActionLink("UnSpy", "UnSpyOneSeller_ViewFunc", new { id = seler.SellerId })</td>
+            }
+
+        </tr>
+    }
+
+
+
+</table>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="1db93f9e831b41a380907e5abdc6b2f2" Name="Diagram1" ZoomLevel="71">
+        <EntityTypeShape EntityType="EbaysiteModel.Users" Width="1.5" PointX="0.5" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="EbaysiteModel.Product" Width="1.5" PointX="5.125" PointY="2.25" />
+        <EntityTypeShape EntityType="EbaysiteModel.Seller" Width="1.5" PointX="2.875" PointY="2.5" />
+        <AssociationConnector Association="EbaysiteModel.FK_Product_ToTable" />
+        <AssociationConnector Association="EbaysiteModel.UsersSeller" />
+        <EntityTypeShape EntityType="EbaysiteModel.WorkedUsers" Width="1.5" PointX="0.5" PointY="6.5" />
+        <AssociationConnector Association="EbaysiteModel.FK_WorkedUsers_ToTable" />
+        <EntityTypeShape EntityType="EbaysiteModel.Roles" Width="1.5" PointX="2.875" PointY="0.5" />
+        <AssociationConnector Association="EbaysiteModel.FK_Roles_ToTable" />
+        <EntityTypeShape EntityType="EbaysiteModel.Setting" Width="1.5" PointX="3.375" PointY="5.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

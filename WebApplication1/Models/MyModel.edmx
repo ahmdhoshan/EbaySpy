@@ -1,0 +1,502 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="EbaysiteModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Keywords">
+          <Key>
+            <PropertyRef Name="Keywords" />
+          </Key>
+          <Property Name="Keywords" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="UsedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SellerId" Type="varchar" MaxLength="50" />
+          <Property Name="ProductURL" Type="varchar(max)" />
+          <Property Name="Title" Type="varchar(max)" />
+          <Property Name="soldarray" Type="varchar(max)" />
+          <Property Name="Last Day Sold Number" Type="int" />
+          <Property Name="Last 7 Days Sold" Type="int" />
+          <Property Name="Last 30 Days Sold" Type="int" />
+          <Property Name="Status" Type="int" />
+          <Property Name="AddedDate" Type="datetime" />
+          <Property Name="repeatProductSold" Type="int" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="Role" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Seller">
+          <Key>
+            <PropertyRef Name="SellerId" />
+          </Key>
+          <Property Name="SellerId" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Rating" Type="int" />
+          <Property Name="Spy" Type="int" Nullable="false" />
+          <Property Name="AddedDate" Type="datetime" />
+          <Property Name="TotalSoldsInLastMonth" Type="int" />
+          <Property Name="TotalSoldsInLast7Days" Type="int" />
+          <Property Name="TotalSoldsInLast1Days" Type="int" />
+          <Property Name="BlackList" Type="bit" />
+        </EntityType>
+        <EntityType Name="Setting">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="SpeedUpServer" Type="bit" Nullable="false" />
+          <Property Name="UserWaitedTime" Type="float" />
+          <Property Name="IndexAd" Type="varchar(max)" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirsName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="EmailId" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DateOfBirth" Type="datetime" />
+          <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="WorkOnGetSellers" Type="bit" />
+          <Property Name="WorkOnGetSeller" Type="int" />
+        </EntityType>
+        <EntityType Name="UsersKeywords">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="Keyword" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="Keyword" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UsersSeller">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="SellerId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="SellerId" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WorkedUsers">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="Worked" Type="bit" />
+        </EntityType>
+        <Association Name="FK_Product_ToTable">
+          <End Role="Seller" Type="Self.Seller" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Seller">
+              <PropertyRef Name="SellerId" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="SellerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Roles_ToTable">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Roles" Type="Self.Roles" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Roles">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsersKeywords_ToTable_2">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="UsersKeywords" Type="Self.UsersKeywords" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UsersKeywords">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsersKeywords_ToTable_3">
+          <End Role="Keywords" Type="Self.Keywords" Multiplicity="1" />
+          <End Role="UsersKeywords" Type="Self.UsersKeywords" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Keywords">
+              <PropertyRef Name="Keywords" />
+            </Principal>
+            <Dependent Role="UsersKeywords">
+              <PropertyRef Name="Keyword" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsersSeller_ToTable">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="UsersSeller" Type="Self.UsersSeller" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UsersSeller">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsersSeller_ToTable_1">
+          <End Role="Seller" Type="Self.Seller" Multiplicity="1" />
+          <End Role="UsersSeller" Type="Self.UsersSeller" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Seller">
+              <PropertyRef Name="SellerId" />
+            </Principal>
+            <Dependent Role="UsersSeller">
+              <PropertyRef Name="SellerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WorkedUsers_ToTable">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="WorkedUsers" Type="Self.WorkedUsers" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="WorkedUsers">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EbaysiteModelStoreContainer">
+          <EntitySet Name="Keywords" EntityType="Self.Keywords" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Seller" EntityType="Self.Seller" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Setting" EntityType="Self.Setting" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UsersKeywords" EntityType="Self.UsersKeywords" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UsersSeller" EntityType="Self.UsersSeller" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WorkedUsers" EntityType="Self.WorkedUsers" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Product_ToTable" Association="Self.FK_Product_ToTable">
+            <End Role="Seller" EntitySet="Seller" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Roles_ToTable" Association="Self.FK_Roles_ToTable">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Roles" EntitySet="Roles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsersKeywords_ToTable_2" Association="Self.FK_UsersKeywords_ToTable_2">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UsersKeywords" EntitySet="UsersKeywords" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsersKeywords_ToTable_3" Association="Self.FK_UsersKeywords_ToTable_3">
+            <End Role="Keywords" EntitySet="Keywords" />
+            <End Role="UsersKeywords" EntitySet="UsersKeywords" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsersSeller_ToTable" Association="Self.FK_UsersSeller_ToTable">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UsersSeller" EntitySet="UsersSeller" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsersSeller_ToTable_1" Association="Self.FK_UsersSeller_ToTable_1">
+            <End Role="Seller" EntitySet="Seller" />
+            <End Role="UsersSeller" EntitySet="UsersSeller" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WorkedUsers_ToTable" Association="Self.FK_WorkedUsers_ToTable">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="WorkedUsers" EntitySet="WorkedUsers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EbaysiteModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirsName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EmailId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DateOfBirth" Type="DateTime" Precision="3" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="WorkOnGetSellers" Type="Boolean" />
+          <Property Name="WorkOnGetSeller" Type="Int32" />
+          <NavigationProperty Name="WorkedUsers" Relationship="EbaysiteModel.FK_WorkedUsers_ToTable" FromRole="Users" ToRole="WorkedUsers" />
+          <NavigationProperty Name="Roles" Relationship="EbaysiteModel.FK_Roles_ToTable" FromRole="Users" ToRole="Roles" />
+          <NavigationProperty Name="Keywords" Relationship="EbaysiteModel.UsersKeywords" FromRole="Users" ToRole="Keywords" />
+          <NavigationProperty Name="Seller" Relationship="EbaysiteModel.UsersSeller" FromRole="Users" ToRole="Seller" />
+        </EntityType>
+        <EntityContainer Name="EbaysiteEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Users" EntityType="Self.Users" />
+          <EntitySet Name="Product" EntityType="EbaysiteModel.Product" />
+          <EntitySet Name="WorkedUsers" EntityType="EbaysiteModel.WorkedUsers" />
+          <AssociationSet Name="FK_WorkedUsers_ToTable" Association="EbaysiteModel.FK_WorkedUsers_ToTable">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="WorkedUsers" EntitySet="WorkedUsers" />
+          </AssociationSet>
+          <EntitySet Name="Roles" EntityType="EbaysiteModel.Roles" />
+          <AssociationSet Name="FK_Roles_ToTable" Association="EbaysiteModel.FK_Roles_ToTable">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Roles" EntitySet="Roles" />
+          </AssociationSet>
+          <EntitySet Name="Setting" EntityType="EbaysiteModel.Setting" />
+          <EntitySet Name="Keywords" EntityType="EbaysiteModel.Keywords" />
+          <AssociationSet Name="UsersKeywords" Association="EbaysiteModel.UsersKeywords">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Keywords" EntitySet="Keywords" />
+          </AssociationSet>
+          <EntitySet Name="Seller" EntityType="EbaysiteModel.Seller" />
+          <AssociationSet Name="FK_Product_ToTable" Association="EbaysiteModel.FK_Product_ToTable">
+            <End Role="Seller" EntitySet="Seller" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="UsersSeller" Association="EbaysiteModel.UsersSeller">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Seller" EntitySet="Seller" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="SellerId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ProductURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="soldarray" Type="String" Unicode="false" FixedLength="false" MaxLength="Max" />
+          <Property Name="Last_Day_Sold_Number" Type="Int32" />
+          <Property Name="Last_7_Days_Sold" Type="Int32" />
+          <Property Name="Last_30_Days_Sold" Type="Int32" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="AddedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Seller" Relationship="EbaysiteModel.FK_Product_ToTable" FromRole="Product" ToRole="Seller" />
+          <Property Name="repeatProductSold" Type="Int32" />
+        </EntityType>
+        <EntityType Name="WorkedUsers">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="Worked" Type="Boolean" />
+          <NavigationProperty Name="Users" Relationship="EbaysiteModel.FK_WorkedUsers_ToTable" FromRole="WorkedUsers" ToRole="Users" />
+        </EntityType>
+        <Association Name="FK_WorkedUsers_ToTable">
+          <End Type="EbaysiteModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="EbaysiteModel.WorkedUsers" Role="WorkedUsers" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="WorkedUsers">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="Role" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Users" Relationship="EbaysiteModel.FK_Roles_ToTable" FromRole="Roles" ToRole="Users" />
+        </EntityType>
+        <Association Name="FK_Roles_ToTable">
+          <End Type="EbaysiteModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="EbaysiteModel.Roles" Role="Roles" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Roles">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Setting">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="SpeedUpServer" Type="Boolean" Nullable="false" />
+          <Property Name="UserWaitedTime" Type="Double" />
+          <Property Name="IndexAd" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Keywords">
+          <Key>
+            <PropertyRef Name="Keywords1" />
+          </Key>
+          <Property Name="Keywords1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Users" Relationship="EbaysiteModel.UsersKeywords" FromRole="Keywords" ToRole="Users" />
+          <Property Name="UsedDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <Association Name="UsersKeywords">
+          <End Type="EbaysiteModel.Users" Role="Users" Multiplicity="*" />
+          <End Type="EbaysiteModel.Keywords" Role="Keywords" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Seller">
+          <Key>
+            <PropertyRef Name="SellerId" />
+          </Key>
+          <Property Name="SellerId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Rating" Type="Int32" />
+          <Property Name="Spy" Type="Int32" Nullable="false" />
+          <Property Name="AddedDate" Type="DateTime" Precision="3" />
+          <Property Name="TotalSoldsInLastMonth" Type="Int32" />
+          <Property Name="TotalSoldsInLast7Days" Type="Int32" />
+          <Property Name="TotalSoldsInLast1Days" Type="Int32" />
+          <Property Name="BlackList" Type="Boolean" />
+          <NavigationProperty Name="Product" Relationship="EbaysiteModel.FK_Product_ToTable" FromRole="Seller" ToRole="Product" />
+          <NavigationProperty Name="Users" Relationship="EbaysiteModel.UsersSeller" FromRole="Seller" ToRole="Users" />
+        </EntityType>
+        <Association Name="FK_Product_ToTable">
+          <End Type="EbaysiteModel.Seller" Role="Seller" Multiplicity="0..1" />
+          <End Type="EbaysiteModel.Product" Role="Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Seller">
+              <PropertyRef Name="SellerId" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="SellerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UsersSeller">
+          <End Type="EbaysiteModel.Users" Role="Users" Multiplicity="*" />
+          <End Type="EbaysiteModel.Seller" Role="Seller" Multiplicity="*" />
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EbaysiteModelStoreContainer" CdmEntityContainer="EbaysiteEntities">
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="EbaysiteModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="WorkOnGetSeller" ColumnName="WorkOnGetSeller" />
+                <ScalarProperty Name="WorkOnGetSellers" ColumnName="WorkOnGetSellers" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="FirsName" ColumnName="FirsName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="EmailId" ColumnName="EmailId" />
+                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Product">
+            <EntityTypeMapping TypeName="EbaysiteModel.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="repeatProductSold" ColumnName="repeatProductSold" />
+                <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Last_30_Days_Sold" ColumnName="Last 30 Days Sold" />
+                <ScalarProperty Name="Last_7_Days_Sold" ColumnName="Last 7 Days Sold" />
+                <ScalarProperty Name="Last_Day_Sold_Number" ColumnName="Last Day Sold Number" />
+                <ScalarProperty Name="soldarray" ColumnName="soldarray" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ProductURL" ColumnName="ProductURL" />
+                <ScalarProperty Name="SellerId" ColumnName="SellerId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WorkedUsers">
+            <EntityTypeMapping TypeName="EbaysiteModel.WorkedUsers">
+              <MappingFragment StoreEntitySet="WorkedUsers">
+                <ScalarProperty Name="Worked" ColumnName="Worked" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="EbaysiteModel.Roles">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Setting">
+            <EntityTypeMapping TypeName="EbaysiteModel.Setting">
+              <MappingFragment StoreEntitySet="Setting">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IndexAd" ColumnName="IndexAd" />
+                <ScalarProperty Name="UserWaitedTime" ColumnName="UserWaitedTime" />
+                <ScalarProperty Name="SpeedUpServer" ColumnName="SpeedUpServer" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Keywords">
+            <EntityTypeMapping TypeName="EbaysiteModel.Keywords">
+              <MappingFragment StoreEntitySet="Keywords">
+                <ScalarProperty Name="UsedDate" ColumnName="UsedDate" />
+                <ScalarProperty Name="Keywords1" ColumnName="Keywords" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="UsersKeywords" TypeName="EbaysiteModel.UsersKeywords" StoreEntitySet="UsersKeywords">
+            <EndProperty Name="Keywords">
+              <ScalarProperty Name="Keywords1" ColumnName="Keyword" />
+            </EndProperty>
+            <EndProperty Name="Users">
+              <ScalarProperty Name="UserId" ColumnName="UserId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="Seller">
+            <EntityTypeMapping TypeName="EbaysiteModel.Seller">
+              <MappingFragment StoreEntitySet="Seller">
+                <ScalarProperty Name="BlackList" ColumnName="BlackList" />
+                <ScalarProperty Name="TotalSoldsInLast1Days" ColumnName="TotalSoldsInLast1Days" />
+                <ScalarProperty Name="TotalSoldsInLast7Days" ColumnName="TotalSoldsInLast7Days" />
+                <ScalarProperty Name="TotalSoldsInLastMonth" ColumnName="TotalSoldsInLastMonth" />
+                <ScalarProperty Name="AddedDate" ColumnName="AddedDate" />
+                <ScalarProperty Name="Spy" ColumnName="Spy" />
+                <ScalarProperty Name="Rating" ColumnName="Rating" />
+                <ScalarProperty Name="SellerId" ColumnName="SellerId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="UsersSeller" TypeName="EbaysiteModel.UsersSeller" StoreEntitySet="UsersSeller">
+            <EndProperty Name="Seller">
+              <ScalarProperty Name="SellerId" ColumnName="SellerId" />
+            </EndProperty>
+            <EndProperty Name="Users">
+              <ScalarProperty Name="UserId" ColumnName="UserId" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

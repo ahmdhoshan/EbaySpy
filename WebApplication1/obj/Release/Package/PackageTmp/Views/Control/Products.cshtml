@@ -1,0 +1,41 @@
+﻿
+
+@model IEnumerable<WebApplication1.Models.Product>
+
+
+
+@{
+    ViewBag.Title = "SellersList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Products List</h2>
+
+
+
+<table class="table">
+
+
+    <tr>
+        <th>Product Page</th>
+        <th>Seller Id</th>
+
+        <th>@Html.ActionLink("Last Day Sold Number", "Products", new { sortOrder = ViewBag.SortParm1 }) </th>
+        <th>@Html.ActionLink("Last 7 Days Sold Number", "Products", new { sortOrder = ViewBag.SortParm7 }) </th>
+        <th>@Html.ActionLink("Last 30 Days Sold Number", "Products", new { sortOrder = ViewBag.SortParm30 }) </th>
+    </tr>
+
+    @foreach (var prodct in Model)
+    {
+      string productid = prodct.ProductURL;
+    <tr>
+        <td><a target="_blank" href="http://www.ebay.com/itm/@productid">@Html.DisplayFor(modelItem => prodct.Title)</a></td>
+        <td><a target="_blank" href="http://www.ebay.com/usr/@prodct.SellerId">@Html.DisplayFor(modelItem => prodct.SellerId)</a></td>
+        <td> @(prodct.Last_Day_Sold_Number)</td>
+        <td>@prodct.Last_7_Days_Sold</td>
+        <td>@prodct.Last_30_Days_Sold</td>
+    </tr>
+
+    }
+
+</table>

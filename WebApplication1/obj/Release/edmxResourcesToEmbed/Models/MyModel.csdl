@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="EbaysiteModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FirsName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="EmailId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DateOfBirth" Type="DateTime" Precision="3" />
+    <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Seller" Relationship="EbaysiteModel.UsersSeller" FromRole="Users" ToRole="Seller" />
+    <Property Name="WorkOnGetSellers" Type="Boolean" />
+    <Property Name="WorkOnGetSeller" Type="Int32" />
+    <NavigationProperty Name="WorkedUsers" Relationship="EbaysiteModel.FK_WorkedUsers_ToTable" FromRole="Users" ToRole="WorkedUsers" />
+    <NavigationProperty Name="Roles" Relationship="EbaysiteModel.FK_Roles_ToTable" FromRole="Users" ToRole="Roles" />
+  </EntityType>
+  <EntityContainer Name="EbaysiteEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Users" EntityType="Self.Users" />
+    <EntitySet Name="Product" EntityType="EbaysiteModel.Product" />
+    <EntitySet Name="Seller" EntityType="EbaysiteModel.Seller" />
+    <AssociationSet Name="FK_Product_ToTable" Association="EbaysiteModel.FK_Product_ToTable">
+      <End Role="Seller" EntitySet="Seller" />
+      <End Role="Product" EntitySet="Product" />
+    </AssociationSet>
+    <AssociationSet Name="UsersSeller" Association="EbaysiteModel.UsersSeller">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Seller" EntitySet="Seller" />
+    </AssociationSet>
+    <EntitySet Name="WorkedUsers" EntityType="EbaysiteModel.WorkedUsers" />
+    <AssociationSet Name="FK_WorkedUsers_ToTable" Association="EbaysiteModel.FK_WorkedUsers_ToTable">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="WorkedUsers" EntitySet="WorkedUsers" />
+    </AssociationSet>
+    <EntitySet Name="Roles" EntityType="EbaysiteModel.Roles" />
+    <AssociationSet Name="FK_Roles_ToTable" Association="EbaysiteModel.FK_Roles_ToTable">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Roles" EntitySet="Roles" />
+    </AssociationSet>
+    <EntitySet Name="Setting" EntityType="EbaysiteModel.Setting" />
+  </EntityContainer>
+  <EntityType Name="Product">
+    <Key>
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="SellerId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Seller" Relationship="EbaysiteModel.FK_Product_ToTable" FromRole="Product" ToRole="Seller" />
+    <Property Name="ProductURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="soldarray" Type="String" Unicode="false" FixedLength="false" MaxLength="Max" />
+    <Property Name="Last_Day_Sold_Number" Type="Int32" />
+    <Property Name="Last_7_Days_Sold" Type="Int32" />
+    <Property Name="Last_30_Days_Sold" Type="Int32" />
+  </EntityType>
+  <EntityType Name="Seller">
+    <Key>
+      <PropertyRef Name="SellerId" />
+    </Key>
+    <Property Name="SellerId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Rating" Type="Int32" />
+    <NavigationProperty Name="Product" Relationship="EbaysiteModel.FK_Product_ToTable" FromRole="Seller" ToRole="Product" />
+    <NavigationProperty Name="Users" Relationship="EbaysiteModel.UsersSeller" FromRole="Seller" ToRole="Users" />
+    <Property Name="Spy" Type="Int32" Nullable="false" />
+    <Property Name="AddedDate" Type="DateTime" Precision="3" />
+    <Property Name="TotalSoldsInLastMonth" Type="Int32" />
+    <Property Name="TotalSoldsInLast7Days" Type="Int32" />
+    <Property Name="TotalSoldsInLast1Days" Type="Int32" />
+  </EntityType>
+  <Association Name="FK_Product_ToTable">
+    <End Type="EbaysiteModel.Seller" Role="Seller" Multiplicity="0..1" />
+    <End Type="EbaysiteModel.Product" Role="Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Seller">
+        <PropertyRef Name="SellerId" />
+      </Principal>
+      <Dependent Role="Product">
+        <PropertyRef Name="SellerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="UsersSeller">
+    <End Type="EbaysiteModel.Users" Role="Users" Multiplicity="*" />
+    <End Type="EbaysiteModel.Seller" Role="Seller" Multiplicity="*" />
+  </Association>
+  <EntityType Name="WorkedUsers">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="Worked" Type="Boolean" />
+    <NavigationProperty Name="Users" Relationship="EbaysiteModel.FK_WorkedUsers_ToTable" FromRole="WorkedUsers" ToRole="Users" />
+  </EntityType>
+  <Association Name="FK_WorkedUsers_ToTable">
+    <End Type="EbaysiteModel.Users" Role="Users" Multiplicity="1" />
+    <End Type="EbaysiteModel.WorkedUsers" Role="WorkedUsers" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="WorkedUsers">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Roles">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="Role" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Users" Relationship="EbaysiteModel.FK_Roles_ToTable" FromRole="Roles" ToRole="Users" />
+  </EntityType>
+  <Association Name="FK_Roles_ToTable">
+    <End Type="EbaysiteModel.Users" Role="Users" Multiplicity="1" />
+    <End Type="EbaysiteModel.Roles" Role="Roles" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="Roles">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Setting">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="SpeedUpServer" Type="Boolean" Nullable="false" />
+    <Property Name="UserWaitedTime" Type="Double" />
+    <Property Name="IndexAd" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Id" Type="Int32" Nullable="false" />
+  </EntityType>
+</Schema>

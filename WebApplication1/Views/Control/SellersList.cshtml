@@ -1,0 +1,77 @@
+﻿
+@model PagedList.IPagedList<WebApplication1.Models.Seller>
+@using PagedList.Mvc;
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+
+@{
+    ViewBag.Title = "SellersList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+<h2>Sellers List</h2>
+
+
+<table class="table">
+
+
+    <tr>
+        <th>Seller Page</th>
+        <th>@Html.ActionLink("Rating", "SellersList", new { sortOrder = ViewBag.SortParmRate }) </th>
+        <th>@Html.ActionLink("30 Day Sales", "SellersList", new { sortOrder = ViewBag.SortParm30 }) </th>
+        <th>@Html.ActionLink("7 Day Sales", "SellersList", new { sortOrder = ViewBag.SortParm7 }) </th>
+        <th>@Html.ActionLink("1 Day Sales", "SellersList", new { sortOrder = ViewBag.SortParm1 }) </th>
+        <th>@Html.ActionLink("Added Date", "SellersList", new { sortOrder = ViewBag.SortParmDate }) </th>
+        <th>BlackList</th>
+        <th>Delete Seller</th>
+        <th>@Html.ActionLink("Spy", "SellersList", new { sortOrder = ViewBag.SortParmSpy }) </th>
+
+
+    @foreach (var seler in Model)
+    {
+
+        <tr>
+
+            <td><a target="_blank" href="http://www.ebay.com/usr/@seler.SellerId">@Html.DisplayFor(modelItem => seler.SellerId)</a></td>
+            <td>@Html.DisplayFor(modelItem => seler.Rating)</td>
+            <td>@Html.DisplayFor(modelItem => seler.TotalSoldsInLastMonth)</td>
+            <td>@Html.DisplayFor(modelItem => seler.TotalSoldsInLast7Days)</td>
+            <td>@Html.DisplayFor(modelItem => seler.TotalSoldsInLast1Days)</td>
+            <td>@Html.DisplayFor(modelItem => seler.AddedDate)</td>
+            <td>@Html.ActionLink("Move", "MoveToBlackList", new { id = seler.SellerId })</td>
+            <td>@Html.ActionLink("Delete", "Delete", new { id = seler.SellerId })</td>
+
+            @if (seler.Spy == 0 || seler.Spy == 2)
+            {
+                <td>@Html.ActionLink("Spy", "SpyOneSeller_ViewFunc", new { id = seler.SellerId })</td>
+            }
+            else if (seler.Spy == 1)
+            {
+                <td>@Html.ActionLink("UnSpy", "UnSpyOneSeller_ViewFunc", new { id = seler.SellerId })</td>
+            }
+
+        </tr>
+    }
+
+
+
+</table>
+
+
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("SellersList",
+    new { page, sortOrder = ViewBag.CurrentSort }))
+
+
+@if (TempData["testmsg"] != null)
+{
+    <script type="text/javascript">
+       alert("@TempData["testmsg"]");
+    </script>
+}

@@ -1,0 +1,48 @@
+﻿
+@model PagedList.IPagedList<WebApplication1.Models.Seller>
+@using PagedList.Mvc;
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Sellers BlackList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Sellers BlackList</h2>
+<h5 class="alert-danger">When a seller in this list we don't allow to get it in future Search</h5>
+
+
+<table class="table">
+
+
+    <tr>
+        <th>Seller Page</th>
+        <th>@Html.ActionLink("Rating", "SellersBlackList", new { sortOrder = ViewBag.SortParmRate }) </th> 
+        <th>@Html.ActionLink("Added Date", "SellersBlackList", new { sortOrder = ViewBag.SortParmDate }) </th>
+        <th>Delete Seller</th>
+        <th>BlackList</th>
+    </tr>
+
+    @foreach (var seler in Model)
+    {
+
+        <tr>
+            <td><a target="_blank" href="http://www.ebay.com/usr/@seler.SellerId">@Html.DisplayFor(modelItem => seler.SellerId)</a></td>
+            <td>@Html.DisplayFor(modelItem => seler.Rating)</td>
+            <td>@Html.DisplayFor(modelItem => seler.AddedDate)</td>
+            <td>@Html.ActionLink("Delete", "Delete", new { id = seler.SellerId })</td>
+            <td>@Html.ActionLink("Remove", "RemoveFromBlackList", new { id = seler.SellerId })</td>
+        </tr>
+    }
+
+
+
+</table>
+
+
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("SellersBlackList",
+    new { page, sortOrder = ViewBag.CurrentSort }))

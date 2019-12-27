@@ -1,0 +1,39 @@
+﻿
+@model PagedList.IPagedList<WebApplication1.Models.Keywords>
+@using PagedList.Mvc;
+
+
+@{
+    ViewBag.Title = "Used Keywords";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Used Keywords</h2>
+
+
+<table class="table">
+
+
+    <tr>
+        <th>Keyword</th>
+        <th>@Html.ActionLink("Used Date", "UsedKeywords", new { sortOrder = ViewBag.SortParmDate }) </th>
+    </tr>
+
+    @foreach (var keyword in Model)
+    {
+
+        <tr>
+            <td>@Html.DisplayFor(modelItem => keyword.Keywords1)</td>
+            <td>@Html.DisplayFor(modelItem => keyword.UsedDate)</td>
+        </tr>
+    }
+
+
+
+</table>
+
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("UsedKeywords",
+    new { page, sortOrder = ViewBag.CurrentSort }))

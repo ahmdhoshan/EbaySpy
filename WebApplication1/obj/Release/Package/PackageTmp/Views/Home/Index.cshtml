@@ -1,0 +1,153 @@
+﻿
+
+@model WebApplication1.Models.Users
+
+
+
+@using (Html.BeginForm())
+{
+
+    <html>
+    <head>
+        <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.0.min.js"></script>
+        <link rel="stylesheet" href="~/Content/Site.css">
+
+    </head>
+
+    <body>
+
+        @if (Request.IsAuthenticated)
+    {
+        if (Model.UserId == 1)
+        {
+            <h1>Admin Panel</h1>
+
+            <table class="table">
+
+                <tr>
+                    <th>
+                        <p class="text-primary h2">Site Performance</p>
+
+                        <br />
+                        <form>
+                            <div class="form-group">
+                                <label>Waiter Time For Big Processes</label>
+                                <input id="waitedtime" type="text" class="form-control" placeholder="In Ms">
+                                <small class="form-text text-muted">The time that user should wait to do a next big processes (in ms)</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label>SpeedUp The Processes: <input type="checkbox" id="SpeedUpss"> </label><br />
+                                <small class="form-text text-muted">Run many threads for the processes (You Need Good Server For That!)</small>
+                            </div>
+
+
+                            <button id="gobtn" type="submit" class="btn btn-primary">Go</button>
+
+                            <div class="text-success" id="content"></div>
+
+
+                        </form>
+
+                    </th>
+
+
+
+                    <th>
+                        <p class="text-primary h2">Site Design</p>
+
+
+                        <br />
+                        <form>
+                            <div class="form-group">
+                                <label>Home Ad</label>
+                                <input id="homead" type="text" class="form-control" placeholder="Image URL">
+                                <small id="sml" class="form-text text-muted">enter an image for index ad</small>
+                                <div class="load-bar" id="lood" style="display: none;">
+                                </div>
+                            </div>
+                        </form>
+
+
+
+                    </th>
+
+                </tr>
+
+
+            </table>
+
+
+
+
+
+
+    }
+    else
+    {
+
+        <img src="https://andrewminalto.com/wp-content/uploads/2015/02/spy-on-ebay.jpg">
+}
+
+}
+else
+{
+
+
+    <img src="https://andrewminalto.com/wp-content/uploads/2015/02/spy-on-ebay.jpg">
+
+
+
+}
+
+
+
+
+
+        <script>
+
+
+
+            $("#gobtn").click(function () {
+
+
+                if ($("#SpeedUpss").is(":checked")) {
+                    var SpeedUpCheck = true;
+                } else { var SpeedUpCheck = false; }
+
+                $.ajax({
+                    url: "/GetSiteSetting/" + SpeedUpCheck + "/" + $("#waitedtime").val(),
+                    type: "GET",
+                    cache: false,
+                    async: false,
+                    complete: function () {
+
+                    },
+                    success: function (data) {
+                        $("#content").html(data);
+                    },
+                    error: function (err) {
+                        $("#content").html("Please fill all boxes");
+                    }
+                });
+
+
+                return false;
+            });
+
+
+
+
+        </script>
+    </body>
+
+</html>
+
+
+
+
+
+}
+
+
+
